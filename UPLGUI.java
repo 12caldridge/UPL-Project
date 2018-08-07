@@ -14,26 +14,97 @@ public class UPLGUI extends JFrame implements ActionListener
 	
 //[StartVariables]
 	JPanel MYPANEL = new JPanel(null); //layout
- 	JTextField txtSearch = new JTextField();
+	JPanel ADD = new JPanel(null);
+	JPanel UPDATE = new JPanel(null);
+	
+	//TABLE PANE
+	JTextField txtSearch = new JTextField();
 	JButton btnSearch = new JButton();
 	JScrollPane scrDriverTable;
-	JPanel TABLE = new JPanel();
-	JPanel ADD = new JPanel();
+	
+	//ADD PANE
+	JButton btnAdd = new JButton();
+	JLabel lblUsername = new JLabel();
+	String[] consData = {"Mercedes", "Ferrari", "Red Bull", "Force India", "Williams", "Haas", "Renault", "Mclaren", "Sauber", "Toro Rosso"};
+	JComboBox comCons = new JComboBox(consData);
+	JTextField txtUsername = new JTextField();
+ 	
+	//UPDATE PANE
+	JLabel lblDriver = new JLabel();
+	String[] driverData = {"Ben", "Chris", "Adi", "James", "Adam"};
+	JComboBox comDriver = new JComboBox(driverData);
+	JLabel lblPosition = new JLabel();
+	String[] positions = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+	JComboBox comPosition = new JComboBox(positions);
+	JButton btnUpdate = new JButton();
+	
+	//Links
+	UPLDriverList driversList = new UPLDriverList();
+	
 	JTabbedPane jtp = new JTabbedPane();
+	
 
 //[EndVariables]
-public void TabbedPane()
-{
-	setTitle("Tabbed Pane");
-	setSize(1000, 800);
-	getContentPane().add(jtp);
-	CREATEMYPANEL();
-	jtp.addTab("Table", TABLE);
-	jtp.addTab("Add", ADD);
-	jtp.setEnabled(0,true);
-	
-}
 
+//[StartFrameSettings]
+public void startGUI()
+{
+
+	this.setLayout(new GridLayout(1,1));
+	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+	CREATEMYPANEL();
+	CREATEPANEL2();
+	CREATEPANEL3();
+	jtp.addTab("Table", MYPANEL);
+	jtp.addTab("Add", ADD);
+	jtp.addTab("Update", UPDATE);
+	this.setTitle("UPL F1");
+	this.setSize(1000,800);
+	this.setForeground( new Color(-255255255) );
+	this.setBackground( new Color(-255255255) );
+	this.setVisible(true);
+	this.setResizable(true);
+	this.add(jtp);
+}
+//[EndFrameSettings]
+
+public void CREATEPANEL3()
+{
+	btnUpdate.setLocation(0, 200);
+	btnUpdate.setSize(400, 100);
+	btnUpdate.setForeground( new Color(0, 0, 0) );
+	btnUpdate.addActionListener(this);
+	btnUpdate.setOpaque(true);
+	btnUpdate.setBackground( new Color(255, 255, 255) );
+	btnUpdate.setText("Update");
+	UPDATE.add(btnUpdate);
+	
+	lblDriver.setLocation(0, 0);
+	lblDriver.setSize(200, 100);
+	lblDriver.setForeground( new Color(0, 0, 0) );
+	lblDriver.setBackground( new Color(255, 255, 255) );
+	lblDriver.setText("Driver Name:");
+	UPDATE.add(lblDriver);
+	
+	comDriver.setLocation(200, 0);
+	comDriver.setSize(200, 100);
+	comDriver.setForeground( new Color(0, 0, 0));
+	comDriver.setBackground( new Color(255, 255, 255));
+	UPDATE.add(comDriver);
+	
+	lblPosition.setLocation(0, 100);
+	lblPosition.setSize(200, 100);
+	lblPosition.setForeground( new Color(0, 0, 0) );
+	lblPosition.setBackground( new Color(255, 255, 255) );
+	lblPosition.setText("Position:");
+	UPDATE.add(lblPosition);
+	
+	comPosition.setLocation(200, 100);
+	comPosition.setSize(200, 100);
+	comPosition.setForeground( new Color(0, 0, 0));
+	comPosition.setBackground( new Color(255, 255, 255));
+	UPDATE.add(comPosition);
+}
 
 public void CREATETABLE()
 {
@@ -51,6 +122,7 @@ public void CREATETABLE()
 	tblDriver.setSize(400,200);
 	tblDriver.setAutoCreateRowSorter(true);
 	tblDriver.setForeground(Color.white);
+	tblDriver.setEnabled(false);
 	tblDriver.setBackground(new Color(0, 102, 204));
 	scrDriverTable = new JScrollPane(tblDriver);
 	
@@ -58,41 +130,98 @@ public void CREATETABLE()
 				
 }
 
+public void CREATEPANEL2()
+{
+	btnAdd.setLocation(0, 200);
+	btnAdd.setSize(400, 100);
+	btnAdd.setForeground( new Color(0, 0, 0) );
+	btnAdd.addActionListener(this);
+	btnAdd.setOpaque(true);
+	btnAdd.setBackground( new Color(255, 255, 255) );
+	btnAdd.setText("Add");
+	ADD.add(btnAdd);
+	
+	txtUsername.setLocation(200,0);
+	txtUsername.setSize(200,100);
+	txtUsername.setForeground( new Color(0, 0, 0) );
+	txtUsername.setBackground( new Color(255, 255, 255) );
+	txtUsername.setToolTipText("Your PSN username");
+	ADD.add(txtUsername);
+	
+	lblUsername.setLocation(0, 0);
+	lblUsername.setSize(200, 100);
+	lblUsername.setForeground( new Color(0, 0, 0) );
+	lblUsername.setBackground( new Color(255, 255, 255) );
+	lblUsername.setText("Username:");
+	ADD.add(lblUsername);
+	
+	comCons.setLocation(0, 100);
+	comCons.setSize(400, 100);
+	comCons.setForeground( new Color(0, 0, 0));
+	comCons.setBackground( new Color(255, 255, 255));
+	ADD.add(comCons);
+}
+
 //[StartIntialization]
 public void CREATEMYPANEL()
 {
-	txtSearch.setLocation(2010,0);
-	txtSearch.setSize(400,100);
+	txtSearch.setLocation(1010,0);
+	txtSearch.setSize(100,50);
 	txtSearch.setForeground( new Color(0, 0, 0) );
 	txtSearch.setBackground( new Color(255, 255, 255) );
 	txtSearch.setToolTipText("Search for a value");
-	TABLE.add(txtSearch);
+	MYPANEL.add(txtSearch);
 
-	btnSearch.setLocation(2010,105);
-	btnSearch.setSize(400,100);
+	btnSearch.setLocation(1010,55);
+	btnSearch.setSize(100,50);
 	btnSearch.setForeground( new Color(0, 0, 0) );
 	btnSearch.addActionListener(this);
 	btnSearch.setBackground( new Color(255, 255, 255) );
 	btnSearch.setText("Search");
-	TABLE.add(btnSearch);
+	MYPANEL.add(btnSearch);
 
 	CREATETABLE();
 	scrDriverTable.setLocation(0,0);
-	scrDriverTable.setSize(2000,200);
+	scrDriverTable.setSize(1000,100);
 	scrDriverTable.setForeground( new Color(-200200200) );
 	scrDriverTable.setOpaque(true);
 	scrDriverTable.setBackground( new Color(-000) );
-	TABLE.add(scrDriverTable);
+	MYPANEL.add(scrDriverTable);
 
 }
 //[EndIntialization]
 
+public void addDriver()
+{
+	String driverName = txtUsername.getText();
+	String constructor = comCons.getSelectedItem().toString();
+	int DriverID = driversList.nextDriverLocation+1;
+	UPLDriver tempDriver = new UPLDriver();
+	tempDriver.driverName=driverName;
+	tempDriver.constructor=constructor;
+	tempDriver.driverID=DriverID;
+	driversList.addDriverToList(tempDriver);
+}
 
 public void actionPerformed(ActionEvent e)
 {
 //[StartActions]
 	
+	if(e.getSource()==btnAdd)
+	{
+		System.out.println("Add button pressed");
+		addDriver();
+	}
 	
+	if(e.getSource()==btnSearch)
+	{
+		System.out.println("Search button pressed");
+	}
+	
+	if(e.getSource()==btnUpdate)
+	{
+		System.out.println("Update button pressed");
+	}
 	
 //[EndActions]
 }
@@ -101,7 +230,7 @@ public void actionPerformed(ActionEvent e)
 public static void main(String[] args )
 {
 	UPLGUI gd = new UPLGUI();
-	gd.TabbedPane();
+	gd.startGUI();
 }
  
 }  

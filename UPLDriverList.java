@@ -5,7 +5,8 @@ public class UPLDriverList
 	String driverFileName="driverList.txt";
 	UPLDriver[] arrayDriver = new UPLDriver[20];
 	int nextDriverLocation = 0;
-	int resultOfDriverSearch = -1;
+	UPLDriver resultOfDriverSearch = new UPLDriver();
+	int finalDriverID=0;
 	
 	public void DriverList()
 	{
@@ -30,7 +31,7 @@ public class UPLDriverList
 		nextDriverLocation++;
 		//remove these!
 		showDriverList();
-		writeDriverListToFile();
+		
 	}
 	
 	public void writeDriverListToFile()
@@ -71,23 +72,72 @@ public class UPLDriverList
 			while(sReadLine != null)
 			{
 				String[] splitData = sReadLine.split(",");
-                 UPLDriver tempRead = new UPLDriver();
-                 tempRead.driverId = Integer.parseInt(splitData[0]);
-                 tempRead.driverName = splitData[1];
-                 tempRead.constructor = splitData[2];
-                 tempRead.points = Integer.parseInt(splitData[3]);
-                 System.out.println("[LIST] Finished reading index: " + tempCount);
-                 System.out.println("[LIST] Driver Found:\n"+tempRead.toString());
-                 addDriverToListToList(tempRead);
+                UPLDriver tempRead = new UPLDriver();
+                tempRead.driverID = Integer.parseInt(splitData[0]);
+				if (tempRead.driverID > finalDriverID)
+				{
+					finalDriverID = tempRead.driverID;
+				}
+                tempRead.driverName = splitData[1];
+                tempRead.constructor = splitData[2];
+                tempRead.points = Integer.parseInt(splitData[3]);
+                System.out.println("[LIST] Finished reading index: " + tempCount);
+                System.out.println("[LIST] Driver Found:\n"+tempRead.toString());
+                addDriverToList(tempRead);
 
-                 sReadLine = br.readLine();
+                sReadLine = br.readLine();
 			}
 			fr.close();
+			System.out.println("[LIST] [READ] Showing contents of file");
+			showDriverList();
 		}
 		
 		catch(Exception exc)
 		{
 			System.out.println("[LIST] [ERROR] there was an error reading the students from the file at: " + tempCount + "   "  + exc);
+		}
+	}
+	
+	public void sortDriverList()//bubble sort
+	{
+		boolean swapped = true;
+		while(swapped==true)
+		{
+			swapped = false;
+			for(int k=0;k<(nextDriverLocation-1);k++)
+			{
+				System.out.println("[LIST] [SORT] Checking "+k+" with "+(k+1));
+				if(arrayDriver[k].points<arrayDriver[k+1].points)
+				{
+					UPLDriver tempDriver = arrayDriver[k];
+					arrayDriver[k] = arrayDriver[k+1];
+					arrayDriver[k+1]=tempDriver;
+					System.out.println("[LIST] [SORT] Position swapped correctly");
+					swapped=true;
+				}
+				
+				else
+				{
+					System.out.println("[LIST] [SORT] Position not swapped");
+				}
+			}
+		}
+		showDriverList();
+	}
+	
+	public void searchForDriver(String searchValue)
+	{
+		System.out.println("[LIST] [SEARCH] starting search for " + searchValue);
+		readDriverListFromFile();
+		
+		for(int i=0;i<nextDriverLocation;i++)
+		{
+			System.out.println("[LIST] [SEARCH] searching at "+i);
+			if (arrayDriver[i].driverName.equals(searchValue))
+			{
+				System.out.println("Search value "+searchValue+" found at "+i);
+				resultOfDriverSearch=arrayDriver[i];
+			}
 		}
 	}
 }

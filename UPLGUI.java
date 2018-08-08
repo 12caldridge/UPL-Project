@@ -8,9 +8,6 @@ import javax.swing.*;
 
 public class UPLGUI extends JFrame implements ActionListener 
 {
-	//UPL encObj = new UPL();
-	
-	
 	
 //[StartVariables]
 	JPanel MYPANEL = new JPanel(null); //layout
@@ -52,6 +49,7 @@ public void startGUI()
 
 	this.setLayout(new GridLayout(1,1));
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+	driversList.readDriverListFromFile();
 	CREATEMYPANEL();
 	CREATEPANEL2();
 	CREATEPANEL3();
@@ -112,11 +110,21 @@ public void CREATETABLE()
 	
 	String[] columnNames ={"Position", "Username", "Constructor", "Points"};
 	
-	Object[][] data={
-		{"1", "Ben", "Mercedes", "25"},
-		{"2", "Chris", "Red Bull", "18"},
-		{"3", "Adi", "Ferrari", "15"}
-	};
+	Object[][] data = new Object[20][4];
+	driversList.sortDriverList();
+	for(int i=0;i<driversList.nextDriverLocation;i++)
+	{
+		String[] tempRow = new String[4];
+		String tempName = driversList.arrayDriver[i].driverName;
+		String tempConstructor = driversList.arrayDriver[i].constructor;
+		int tempPoints = driversList.arrayDriver[i].points;
+		tempRow[0]=""+(i+1);
+		tempRow[1]= tempName;
+		tempRow[2]= tempConstructor;
+		tempRow[3]= ""+tempPoints;
+		data[i]=tempRow;
+			
+	}
 	
 	JTable tblDriver = new JTable(data, columnNames);
 	tblDriver.setSize(400,200);
@@ -125,6 +133,12 @@ public void CREATETABLE()
 	tblDriver.setEnabled(false);
 	tblDriver.setBackground(new Color(0, 102, 204));
 	scrDriverTable = new JScrollPane(tblDriver);
+	scrDriverTable.setLocation(0,0);
+	scrDriverTable.setSize(1000,100);
+	scrDriverTable.setForeground( new Color(-200200200) );
+	scrDriverTable.setOpaque(true);
+	scrDriverTable.setBackground( new Color(-000) );
+	MYPANEL.add(scrDriverTable);
 	
 	 
 				
@@ -181,13 +195,7 @@ public void CREATEMYPANEL()
 	MYPANEL.add(btnSearch);
 
 	CREATETABLE();
-	scrDriverTable.setLocation(0,0);
-	scrDriverTable.setSize(1000,100);
-	scrDriverTable.setForeground( new Color(-200200200) );
-	scrDriverTable.setOpaque(true);
-	scrDriverTable.setBackground( new Color(-000) );
-	MYPANEL.add(scrDriverTable);
-
+	
 }
 //[EndIntialization]
 
@@ -195,12 +203,16 @@ public void addDriver()
 {
 	String driverName = txtUsername.getText();
 	String constructor = comCons.getSelectedItem().toString();
-	int DriverID = driversList.nextDriverLocation+1;
+	driversList.readDriverListFromFile();
+	int DriverID = driversList.finalDriverID+1;
 	UPLDriver tempDriver = new UPLDriver();
 	tempDriver.driverName=driverName;
 	tempDriver.constructor=constructor;
 	tempDriver.driverID=DriverID;
 	driversList.addDriverToList(tempDriver);
+	driversList.writeDriverListToFile();
+	MYPANEL.remove(scrDriverTable);
+	CREATETABLE();
 }
 
 public void actionPerformed(ActionEvent e)
@@ -211,11 +223,14 @@ public void actionPerformed(ActionEvent e)
 	{
 		System.out.println("Add button pressed");
 		addDriver();
+		driversList.sortDriverList();
 	}
 	
 	if(e.getSource()==btnSearch)
 	{
 		System.out.println("Search button pressed");
+		String searchValue=txtSearch.getText();
+		driversList.searchForDriver(searchValue);
 	}
 	
 	if(e.getSource()==btnUpdate)

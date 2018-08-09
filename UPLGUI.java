@@ -13,6 +13,7 @@ public class UPLGUI extends JFrame implements ActionListener
 	JPanel MYPANEL = new JPanel(null); //layout
 	JPanel ADD = new JPanel(null);
 	JPanel UPDATE = new JPanel(null);
+	JPanel EDIT = new JPanel(null);
 	
 	//TABLE PANE
 	JTextField txtSearch = new JTextField();
@@ -28,12 +29,21 @@ public class UPLGUI extends JFrame implements ActionListener
  	
 	//UPDATE PANE
 	JLabel lblDriver = new JLabel();
-	String[] driverData = {"Ben", "Chris", "Adi", "James", "Adam"};
-	JComboBox comDriver = new JComboBox(driverData);
+	String[] driverData = new String[20];
+	JComboBox comDriver = new JComboBox();
 	JLabel lblPosition = new JLabel();
 	String[] positions = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 	JComboBox comPosition = new JComboBox(positions);
 	JButton btnUpdate = new JButton();
+	
+	//EDIT/DELETE PANE
+	JLabel lblNewCons = new JLabel();
+	JComboBox comEditDriver = new JComboBox();
+	JTextField txtNewName = new JTextField();
+	JButton btnDelete = new JButton();
+	JButton btnEdit = new JButton();
+	JComboBox comEditCons = new JComboBox(consData);
+	JLabel lblNewName = new JLabel();
 	
 	//Links
 	UPLDriverList driversList = new UPLDriverList();
@@ -53,9 +63,11 @@ public void startGUI()
 	CREATEMYPANEL();
 	CREATEPANEL2();
 	CREATEPANEL3();
+	CREATEPANEL4();
 	jtp.addTab("Table", MYPANEL);
 	jtp.addTab("Add", ADD);
 	jtp.addTab("Update", UPDATE);
+	jtp.addTab("Edit", EDIT);
 	this.setTitle("UPL F1");
 	this.setSize(1000,800);
 	this.setForeground( new Color(-255255255) );
@@ -65,6 +77,84 @@ public void startGUI()
 	this.add(jtp);
 }
 //[EndFrameSettings]
+
+public void CREATEPANEL4()
+{
+	createEditDriverCombo();
+	
+	comEditCons.setLocation(200, 100);
+	comEditCons.setSize(200, 100);
+	comEditCons.setForeground( new Color(0, 0, 0));
+	comEditCons.setBackground( new Color(255, 255, 255));
+	EDIT.add(comEditCons);
+	
+	lblNewName.setLocation(0, 200);
+	lblNewName.setSize(200, 100);
+	lblNewName.setForeground( new Color(0, 0, 0) );
+	lblNewName.setBackground( new Color(255, 255, 255) );
+	lblNewName.setText("New Driver Name:");
+	EDIT.add(lblNewName);
+	
+	txtNewName.setLocation(200,200);
+	txtNewName.setSize(200,100);
+	txtNewName.setForeground( new Color(0, 0, 0) );
+	txtNewName.setBackground( new Color(255, 255, 255) );
+	txtNewName.setToolTipText("Your new username");
+	EDIT.add(txtNewName);
+	
+	lblNewCons.setLocation(0, 100);
+	lblNewCons.setSize(200, 100);
+	lblNewCons.setForeground( new Color(0, 0, 0) );
+	lblNewCons.setBackground( new Color(255, 255, 255) );
+	lblNewCons.setText("New Constructor:");
+	EDIT.add(lblNewCons);
+	
+	btnEdit.setLocation(0, 300);
+	btnEdit.setSize(400, 100);
+	btnEdit.setForeground( new Color(0, 0, 0) );
+	btnEdit.addActionListener(this);
+	btnEdit.setOpaque(true);
+	btnEdit.setBackground( new Color(255, 255, 255) );
+	btnEdit.setText("Update account");
+	EDIT.add(btnEdit);
+	
+	btnDelete.setLocation(0, 400);
+	btnDelete.setSize(400, 100);
+	btnDelete.setForeground( new Color(0, 0, 0) );
+	btnDelete.addActionListener(this);
+	btnDelete.setOpaque(true);
+	btnDelete.setBackground( new Color(255, 255, 255) );
+	btnDelete.setText("Delete Account");
+	EDIT.add(btnDelete);
+}
+
+public void createEditDriverCombo()
+{
+	comEditDriver.setForeground( new Color(0, 0, 0));
+	comEditDriver.setBackground( new Color(255, 255, 255));
+	comEditDriver.setLocation(0, 0);
+	comEditDriver.setSize(400, 100);
+	for(int i=0;i<driversList.nextDriverLocation;i++)
+	{
+		driverData[i]=driversList.arrayDriver[i].driverName;
+		comEditDriver.addItem(driverData[i]);
+	}
+	EDIT.add(comEditDriver);
+}
+
+public void createDriverCombo()
+{
+	comDriver.setLocation(200, 0);
+	comDriver.setSize(200, 100);
+	for(int i=0;i<driversList.nextDriverLocation;i++)
+	{
+		driverData[i]=driversList.arrayDriver[i].driverName;
+		comDriver.addItem(driverData[i]);
+	}
+	comDriver.setForeground( new Color(0, 0, 0));
+	comDriver.setBackground( new Color(255, 255, 255));
+	UPDATE.add(comDriver);
+}
 
 public void CREATEPANEL3()
 {
@@ -84,11 +174,7 @@ public void CREATEPANEL3()
 	lblDriver.setText("Driver Name:");
 	UPDATE.add(lblDriver);
 	
-	comDriver.setLocation(200, 0);
-	comDriver.setSize(200, 100);
-	comDriver.setForeground( new Color(0, 0, 0));
-	comDriver.setBackground( new Color(255, 255, 255));
-	UPDATE.add(comDriver);
+	createDriverCombo();
 	
 	lblPosition.setLocation(0, 100);
 	lblPosition.setSize(200, 100);
@@ -127,14 +213,14 @@ public void CREATETABLE()
 	}
 	
 	JTable tblDriver = new JTable(data, columnNames);
-	tblDriver.setSize(400,200);
+	tblDriver.setSize(600,500);
 	tblDriver.setAutoCreateRowSorter(true);
 	tblDriver.setForeground(Color.white);
 	tblDriver.setEnabled(false);
 	tblDriver.setBackground(new Color(0, 102, 204));
 	scrDriverTable = new JScrollPane(tblDriver);
 	scrDriverTable.setLocation(0,0);
-	scrDriverTable.setSize(1000,100);
+	scrDriverTable.setSize(1200,300);
 	scrDriverTable.setForeground( new Color(-200200200) );
 	scrDriverTable.setOpaque(true);
 	scrDriverTable.setBackground( new Color(-000) );
@@ -179,14 +265,14 @@ public void CREATEPANEL2()
 //[StartIntialization]
 public void CREATEMYPANEL()
 {
-	txtSearch.setLocation(1010,0);
+	txtSearch.setLocation(1210,0);
 	txtSearch.setSize(100,50);
 	txtSearch.setForeground( new Color(0, 0, 0) );
 	txtSearch.setBackground( new Color(255, 255, 255) );
 	txtSearch.setToolTipText("Search for a value");
 	MYPANEL.add(txtSearch);
 
-	btnSearch.setLocation(1010,55);
+	btnSearch.setLocation(1210,55);
 	btnSearch.setSize(100,50);
 	btnSearch.setForeground( new Color(0, 0, 0) );
 	btnSearch.addActionListener(this);
@@ -213,6 +299,121 @@ public void addDriver()
 	driversList.writeDriverListToFile();
 	MYPANEL.remove(scrDriverTable);
 	CREATETABLE();
+	UPDATE.remove(comDriver);
+	createDriverCombo();
+	EDIT.remove(comEditDriver);
+	createEditDriverCombo();
+	txtUsername.setText("");
+}
+
+public void updatePoints(String tempPosition)
+{
+	if(tempPosition.equals("1"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+25;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("2"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+18;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("3"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+15;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("4"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+12;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("5"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+10;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("6"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+8;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("7"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+6;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("8"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+4;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("9"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+2;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+	if(tempPosition.equals("10"))
+	{
+		int tempDriver = driversList.currentDriver;
+		int tempPoints = driversList.arrayDriver[tempDriver].points;
+		tempPoints= tempPoints+1;
+		driversList.arrayDriver[tempDriver].points= tempPoints;
+		driversList.writeDriverListToFile();
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+	}
+}
+
+public void Edit()
+{
+	String tempNewName = txtNewName.getText();
+	String
 }
 
 public void actionPerformed(ActionEvent e)
@@ -233,9 +434,24 @@ public void actionPerformed(ActionEvent e)
 		driversList.searchForDriver(searchValue);
 	}
 	
+	if(e.getSource()==btnEdit)
+	{
+		System.out.println("Edit button pressed");
+		Edit();
+	}
+	
+	if(e.getSource()==btnDelete)
+	{
+		System.out.println("Delete button pressed");
+	}
+	
 	if(e.getSource()==btnUpdate)
 	{
 		System.out.println("Update button pressed");
+		String searchValue = comDriver.getSelectedItem().toString();
+		driversList.searchForDriver(searchValue);
+		String tempPosition = comPosition.getSelectedItem().toString();
+		updatePoints(tempPosition);
 	}
 	
 //[EndActions]

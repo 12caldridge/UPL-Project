@@ -7,6 +7,8 @@ public class UPLDriverList
 	int nextDriverLocation = 0;
 	UPLDriver resultOfDriverSearch = new UPLDriver();
 	int finalDriverID=0;
+	int driverPoints=0;
+	int currentDriver;
 	
 	public void DriverList()
 	{
@@ -29,8 +31,8 @@ public class UPLDriverList
 		
 		arrayDriver[nextDriverLocation]= tempDriver;
 		nextDriverLocation++;
-		//remove these!
-		showDriverList();
+		
+		
 		
 	}
 	
@@ -61,7 +63,6 @@ public class UPLDriverList
 	{
 		System.out.println("[LIST] Running reading algorithm");
 		nextDriverLocation=0;
-		int tempCount = 0;
 		try
 		{
 			FileReader fr = new FileReader(driverFileName);
@@ -81,7 +82,6 @@ public class UPLDriverList
                 tempRead.driverName = splitData[1];
                 tempRead.constructor = splitData[2];
                 tempRead.points = Integer.parseInt(splitData[3]);
-                System.out.println("[LIST] Finished reading index: " + tempCount);
                 System.out.println("[LIST] Driver Found:\n"+tempRead.toString());
                 addDriverToList(tempRead);
 
@@ -137,6 +137,7 @@ public class UPLDriverList
 			{
 				System.out.println("Search value "+searchValue+" found at "+i);
 				resultOfDriverSearch=arrayDriver[i];
+				currentDriver = i;
 			}
 		}
 	}

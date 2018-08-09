@@ -1,14 +1,2 @@
-1,Test,Force India,101
-2,Ben,Williams,26
-3,jeff,Red Bull,0
-4,Tom,Mercedes,0
-5,H,Renault,0
-6,a,Renault,0
-7,Testing,Renault,8
-8,Testing2,Mercedes,0
-9,Test3,Mercedes,0
-10,Jim,Mercedes,0
-11,This_Test,Haas,0
-12,fgfvghnjf,Renault,0
-13,bghihubxjk,Mercedes,0
-14,ghnmjhjhkjhkljumlmyt,Williams,0
+5,jeff,Mercedes,0
+6,TESTING,Mercedes,0

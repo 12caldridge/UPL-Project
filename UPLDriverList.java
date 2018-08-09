@@ -94,7 +94,7 @@ public class UPLDriverList
 		
 		catch(Exception exc)
 		{
-			System.out.println("[LIST] [ERROR] there was an error reading the students from the file at: " + tempCount + "   "  + exc);
+			System.out.println("[LIST] [ERROR] there was an error reading the students from the file at: " + exc);
 		}
 	}
 	

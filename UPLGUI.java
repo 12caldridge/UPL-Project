@@ -487,9 +487,19 @@ public void actionPerformed(ActionEvent e)
 		System.out.println("Search button pressed");
 		lblSearchValue.setText("");
 		String searchValue=txtSearch.getText();
+		txtSearch.setText("");
+		System.out.println(searchValue);
 		driversList.searchForDriver(searchValue);
-		int tempDriver = driversList.currentDriver;
-		lblSearchValue.setText(driversList.arrayDriver[tempDriver].toString());
+		boolean DriverFound=driversList.driverFound;
+		if (DriverFound==true)
+		{
+			int tempDriver = driversList.currentDriver;
+			lblSearchValue.setText(driversList.arrayDriver[tempDriver].toString());
+		}
+		if (DriverFound=false)
+		{
+				lblSearchValue.setText("ERROR, DRIVER NOT FOUND");
+		}
 	}
 	
 	if(e.getSource()==btnEdit)

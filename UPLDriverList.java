@@ -9,6 +9,7 @@ public class UPLDriverList
 	int finalDriverID=0;
 	int driverPoints=0;
 	int currentDriver;
+	boolean driverFound;
 	
 	public void DriverList()
 	{
@@ -129,6 +130,7 @@ public class UPLDriverList
 	{
 		System.out.println("[LIST] [SEARCH] starting search for " + searchValue);
 		readDriverListFromFile();
+		driverFound=false;
 		
 		for(int i=0;i<nextDriverLocation;i++)
 		{
@@ -137,6 +139,7 @@ public class UPLDriverList
 			{
 				System.out.println("Search value "+searchValue+" found at "+i);
 				resultOfDriverSearch=arrayDriver[i];
+				driverFound = true;
 				currentDriver = i;
 			}
 		}

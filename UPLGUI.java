@@ -419,21 +419,37 @@ public void updatePoints(String tempPosition)
 
 public void Edit()
 {
+	
 	String tempNewName = txtNewName.getText();
 	String searchValue = comEditDriver.getSelectedItem().toString();
 	String newConstructor = comEditCons.getSelectedItem().toString();
 	driversList.searchForDriver(searchValue);
 	int tempDriver = driversList.currentDriver;
-	driversList.arrayDriver[tempDriver].driverName=tempNewName;
-	driversList.arrayDriver[tempDriver].constructor=newConstructor;
-	MYPANEL.remove(scrDriverTable);
-	CREATETABLE();
-	UPDATE.remove(comDriver);
-	createDriverCombo();
-	EDIT.remove(comEditDriver);
-	createEditDriverCombo();
-	driversList.writeDriverListToFile();
-	txtNewName.setText("");
+	if (tempNewName.equals(""))
+	{
+		driversList.arrayDriver[tempDriver].constructor=newConstructor;
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+		UPDATE.remove(comDriver);
+		createDriverCombo();
+		EDIT.remove(comEditDriver);
+		createEditDriverCombo();
+		driversList.writeDriverListToFile();
+		txtNewName.setText("");
+	}
+	else
+	{
+		driversList.arrayDriver[tempDriver].driverName=tempNewName;
+		driversList.arrayDriver[tempDriver].constructor=newConstructor;
+		MYPANEL.remove(scrDriverTable);
+		CREATETABLE();
+		UPDATE.remove(comDriver);
+		createDriverCombo();
+		EDIT.remove(comEditDriver);
+		createEditDriverCombo();
+		driversList.writeDriverListToFile();
+		txtNewName.setText("");
+	}
 }
 
 public void Delete()
@@ -496,7 +512,7 @@ public void actionPerformed(ActionEvent e)
 			int tempDriver = driversList.currentDriver;
 			lblSearchValue.setText(driversList.arrayDriver[tempDriver].toString());
 		}
-		if (DriverFound=false)
+		else
 		{
 				lblSearchValue.setText("ERROR, DRIVER NOT FOUND");
 		}

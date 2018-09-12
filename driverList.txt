@@ -1,2 +1,2 @@
-5,jeff,Mercedes,25
+5,jeff,Mclaren,50
 6,TESTING,Mercedes,0

@@ -5,3 +5,4 @@ pause
 javac UPLGUI.java
 pause
 java UPLGUI
+pause

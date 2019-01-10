@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 public class UPLDriverList
 {
-	String driverFileName="driverList.txt";
+	File driverFileName= new File("driverList.txt");
 	UPLDriver[] arrayDriver = new UPLDriver[20];
 	int nextDriverLocation = 0;
 	UPLDriver resultOfDriverSearch = new UPLDriver();
